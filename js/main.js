@@ -1,0 +1,100 @@
+(function(){
+    const _ = function(e){
+        return document.querySelectorAll(e);
+    }
+    async function f(e){
+        const fd = new FormData(e),
+        {method} = e;
+        fd.append("type", e.querySelector(".click").value);
+        ul("l", e);
+        return fetch(e.action, {
+            method : method,
+            body : fd
+        }).then(res=>{
+            ul("u", e);
+            e.querySelector(".click").classList.remove("click");
+            return res.json();
+        });
+
+    }
+    function ul(m, e){
+        for(let i = 0; i < e.length; i++){
+            switch(m){
+                case "l" : 
+                        e[i].disabled = true;
+                break;
+                case "u" : 
+                    e[i].disabled = false;
+                break;
+            }
+        }
+    }
+    async function s(e, c){
+        e.preventDefault();
+        const d = await f(this);
+        
+        if(c){
+            c.call(this, d);    
+        }
+
+        return d;
+    }
+    async function w(){
+        this.classList.add("click");
+    }
+    async function a(e){
+        e.querySelectorAll("input[type=submit]").forEach(e=>e.onclick = w);
+    }
+    function ca(){
+        let p = this,c;
+        
+        while(p = p.parentElement){
+            c = p.querySelectorAll(".course");
+            if(c.length == 1){continue;}
+            else{break;}
+        }
+        
+        if(this.name == "course")
+        if(this.checked){
+            c.forEach(e=>e.checked = true);
+        }
+        else{
+            c.forEach(e=>e.checked = false);
+        }
+        else{
+            let t = 0;
+            c.forEach(e=>t+= e.checked ? 1 : 0);
+            if(!this.checked){
+                t++;
+            }
+            if(c.length-1 == t){ 
+                p.querySelector(".course[name='course']").checked = true;
+            }
+            else{
+                p.querySelector(".course[name='course']").checked = false;
+            }
+        }
+    }
+    function dc(){
+        let c = _(".courses input[type='checkbox']:not([name='course']):checked"),
+        fd = new FormData(),
+        i = 0;
+        console.log(c);
+        fd.append("mode", "delete_course");
+        for(; i < c.length; i++){
+            fd.append(c[i].name, c[i].nextElementSibling.value);
+        }
+        fetch("process.php", {method : "POST", body : fd})
+        .then(e=>e.json())
+        .then(e=>console.log(e));
+    }
+    window.onload = ()=>{
+        _("label > input[type='checkbox']").forEach(e=>{e.onclick=ca;});
+        _("input[value='Delete']").forEach(e=>e.onclick = dc);
+        _("form").forEach(e=>{a(e); e.onsubmit=s;});
+    }
+    this.NYP = {
+        send : s,
+        ca : ca
+    }
+})();
