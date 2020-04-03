@@ -91,7 +91,7 @@
     window.onload = ()=>{
         _("label > input[type='checkbox']").forEach(e=>{e.onclick=ca;});
         _("input[value='Delete']").forEach(e=>e.onclick = dc);
-        _("form").forEach(e=>{a(e); e.onsubmit=s;});
+        _("form[data-prevent='true']").forEach(e=>{a(e); e.onsubmit=s;});
     }
     this.NYP = {
         send : s,

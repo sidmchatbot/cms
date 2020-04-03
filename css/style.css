@@ -188,6 +188,16 @@ nav li:hover, nav li.active{
     margin: 0 50px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+}
+.main-content form.add-edit div.controls{
+    width: 85%;
+    margin-bottom: 20px;
+    display: flex;
+}
+.main-content form.add-edit input[type="submit"]{
+    width: auto !important;
+    margin-left: auto;
 }
 .main-content form.add-edit h5{
     margin-bottom: 10px;
@@ -213,6 +223,7 @@ nav li:hover, nav li.active{
     margin-right: 10px;
 }
 .main-content form.add-edit input:not([type="button"]),
+.main-content form.add-edit input:not([type="submit"]),
 .main-content form.add-edit textarea,
 .main-content form.add-edit select
 {
@@ -227,8 +238,27 @@ nav li:hover, nav li.active{
     font-family: "Open Sans", sans-serif;
 }
 .main-content .left, .main-content .right{
-    width: 100%;
+    width: 50%;
     display: flex;
     flex-direction: column;
-    
+}
+.main-content .pagination{
+    display: flex;
+    justify-content: center;
+}
+.main-content .pagination p{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 2px;
+    color: #d30072;
+    border: 2px solid #d30072;
+}
+.main-content .pagination p:hover, .main-content .pagination p.active{
+    background-color: #d30072;
+    color: white;
 }

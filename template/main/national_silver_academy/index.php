@@ -13,7 +13,10 @@
         <label class="checkbox"><input type="checkbox" name="course" class="course"></label>        
         <div class="name">Course</div>        
     </div>
-    <div class="data">
+    <?php
+        echo var_dump($GFirestore->page("nsa", $key_path));
+    ?>
+    <!-- <div class="data">
         <label class="checkbox">
             <input type="checkbox" name="course[0]" class="course">
         </label>
@@ -72,5 +75,5 @@
             <input type="checkbox" name="course[9]" class="course">
         </label>
         <div class="name">What is Gamification?</div>
-    </div>    
+    </div>     -->
 </div>
