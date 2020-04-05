@@ -1,6 +1,14 @@
-    <h1 class="add-h1"><?=$key_path?> Course             
-    </h1>
-    <form action="process.php?type=<?=$key_path == "add" ? "add" : "update";?>" method="POST" data-prevent="false" class="add-edit">
+    <?php
+        $doc =  $GFirestore->doc("course", $key_path);
+        $mode = $key_path == "add" ? "add" : "update";
+        $data = $doc->snapshot()->exists() ? $GFirestore->to_array([$doc->snapshot()], ["*"])[0] : [];
+        
+        if(!$doc->snapshot()->exists() && $mode != "add"){
+            require_once __DIR__."\\404.php";
+        }
+    ?>
+    <h1 class="add-h1"><?=$mode?> Course</h1>
+    <form action="process.php?type=<?=$mode;?>" method="POST" data-prevent="false" class="add-edit">
         <div class="controls">
             <input type="submit" name="submit" class="btn"/>
         </div>
@@ -10,45 +18,64 @@
             <hr>
             <label for="name">
                 <p>Name </p>
-                <input type="text" name="name" id="name" placeholder="Enter Course Name">
+                <input type="text" name="name" id="name" placeholder="Enter Course Name" value="<?=$data["name"] ?? "";?>">
             </label>
             <label for="program">
                 <p>Program</p>
                 <select name="program" id="program">
-                    <option selected disabled>Pick Program</option>
-                    <option value="nsa">National Silver Academy</option>
-                    <option value="sc">Short Course</option>
-                    <option value="sp">Specialist Diploma</option>
-                    <option value="wsp">Work-Study Program</option>
+                    <?php
+                        $option = [
+                            ""=>"Pick Program",
+                            "nsa"=>"National Silver Academy",
+                            "sc"=>"Short Course",
+                            "sp"=>"Specialist Diploma",
+                            "wsp"=>"Work-Study Program"
+                        ];
+
+                        foreach($option as $k=>$v){
+                            if($k == ""){
+                                echo "<option ".($key_path == "add" ? "selected" : "")." disabled>$v</option>";
+                            }
+                            else{
+                                echo "<option value='$k' ".($k == ($data["program"] ?? "") || $prog_path == strtolower($v) && $mode == "add" ? "selected" : "").">$v</option>";
+                            }
+                        }
+                    ?>
                 </select>
             </label>
             <label for="description">
                 <p>Description </p>
-                <textarea rows=10 name="description" id="description" placeholder="Type in the description of the course"></textarea>
+                <textarea rows=10 name="description" id="description" placeholder="Type in the description of the course"><?=$data["description"] ?? "";?></textarea>
             </label>
             <h5>Timing</h5>
             <hr>
             <label for="duration">
                 <p>Duration </p>
                 <div class="split-content">
-                    <input type="number" id="duration" name="duration" min="1" max="10"/>
+                    <input type="number" id="duration" name="duration" min="1" max="12" value="<?=$data["duration"]["val"] ?? ""?>"/>
                     <select id="duration-period" name="duration-period">
-                        <option disabled></option>
-                        <option value="hour">Hour</option>
-                        <option value="day">Day</option>
-                        <option value="month">Month</option>
-                        <option value="year">Year</option>
+                        <?php
+                            $option = [
+                                "Hour",
+                                "Day", 
+                                "Month",
+                                "Year"
+                            ];
+                            foreach($option as $d){
+                                echo "<option value=".strtolower($d)." ".(strtolower($d) == $data["duration"]["period"] ? "selected" : "").">$d</option>";
+                            }
+                        ?>
                     </select>
                 </div>
             </label>
             <div class="split-content">
                 <label for="registration">
                     <p>Registration Date </p>
-                    <input type="date" name="registration" id="registration"/>
+                    <input type="date" name="registration" id="registration" value="<?=$data["registration"] ?? "";?>"/>
                 </label> 
                 <label for="start">
                     <p>Commencement Date </p>
-                    <input type="date" name="start" id="start"/>
+                    <input type="date" name="start" id="start" value="<?=$data["start"] ?? "";?>"/>
                 </label> 
             </div>
         </div>
@@ -57,7 +84,7 @@
             <hr>
             <label for="requirement">
                 <p>Requirement</p>
-                <textarea name="requirement" id="requirement" rows="10"></textarea>
+                <textarea name="requirement" id="requirement" rows="10"><?=$data["requirement"] ?? "" ?></textarea>
             </label>
             <label for="fees">
                 <p>Fees</p>

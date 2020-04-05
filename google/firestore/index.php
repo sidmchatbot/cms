@@ -23,30 +23,58 @@
         public function doc($col, $d){
             return $this->db->collection($col)->document($d);
         }
+        public function update($col, $d, $data){
+            $field = [];
+            foreach($data as $k=>$v){
+                if($k == "program")
+                    $v = $this->doc("programme", $v);
+                $field[] = ["path"=>$k, "value"=>$v];
+            }
+            $this->doc($col, $d)->update($field);
+        }
         public function insert($col, $data){
             $this->db->collection($col)->add($data);
         }
-        public function to_array($arr){
+        public function delete($col, $doc){
+            $this->doc($col, $doc)->delete();
+        }
+        public function to_array($arr, $incl = []){
             $data = [];
             foreach($arr as $doc){
-                $data[] = array_merge(["key"=>$doc->id()], $doc->data());
+                $data[] = ["key"=>$doc->id()];
+                foreach($doc->data() as $key=>$val){
+                    if(!(array_search("*",$incl) > -1)){
+                        if(!(array_search($key, $incl) > -1))
+                            continue;
+                    }
+                    if(is_object($val)){
+                        $class = explode("\\", get_class($val));
+                        switch($class[count($class)-1]){
+                            case "DocumentReference" : 
+                                $data[count($data)-1][$key] = $val->id();
+                            break;
+                            case "Timestamp" : 
+                                $data[count($data)-1][$key] = $val->formatAsString();
+                            break;
+                        }
+                    }
+                    else{
+                        $data[count($data)-1][$key] = $val;
+                    }
+                }
             }
             return $data;
         }
-        public function page($prog, $num){
+        public function page($prog, $num = 1, $inc = ["*"]){
+            if($num == "")$num = 1;
             return $this->to_array(
                 $this->db
                 ->collection("course")
                 ->where("program", "==", $this->doc("programme", $prog))
-                ->offset(10*($num*1))
-                ->documents()
+                ->offset(10*($num-1))
+                ->documents(),
+                $inc
             );
-            // return $this->to_array($this->db
-            // ->collection("course")
-            // ->where("program", "==", $this->doc("programme", $prog))
-            // ->orderBy("date_added", "DESC")
-            // ->offset(10*$num)
-            // ->documents());
         }
     }
 ?>

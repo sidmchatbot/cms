@@ -4,7 +4,7 @@
         <div class="name">Course</div>        
     </div>
     <?php
-        $data = $GFirestore->page("nsa", $key_path, ["name"]);
+        $data = $GFirestore->page("sc", $key_path, ["name"]);
         if(isset($_GET["search"])){
             $data = array_filter($data, function($v){
                 $match = strtolower($_GET["search"]);

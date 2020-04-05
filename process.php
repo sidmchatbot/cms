@@ -21,5 +21,23 @@
         header("Location: ".$_POST["redirect"]);
     }
 
-    header("Content-Type:application/json");
+    if($_GET["type"] == "desc"){
+        $GFirestore->update("programme", $_POST["doc"], ["description"=>$_POST["desc"]]);
+    }
+
+    if($_GET["type"] == "delete"){
+        for($i = 0; $i < count($_POST["course"]); $i++){
+            $GFirestore->delete("course", $_POST["course"][$i]);
+        }
+    }
+
+    if($_GET["type"] == "update"){
+        $post = $_POST;
+        unset($post["submit"]);
+        unset($post["key"]);
+        unset($post["redirect"]);
+
+        $GFirestore->update("course", $_POST["key"], $post);
+        header("Location: ".$_POST["redirect"]);
+    }
 ?>

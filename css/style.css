@@ -132,10 +132,6 @@ nav li:hover, nav li.active{
     background-color: rgba(141,2,76,0.05);
     box-shadow: 0px 3px 4px -4px black;
 }
-.main-content .courses .data .action{
-    display: flex;
-    justify-content: flex-end !important;
-}
 .main-content .courses .data .action input[type=button]{
     background-color: #d30072;
     border: none;
@@ -159,6 +155,13 @@ nav li:hover, nav li.active{
 .main-content .courses .data div:nth-child(2){
     flex: 6;
     cursor: pointer;
+}
+.main-content .courses .data a{
+    display: flex;
+    align-items: center;
+    color: black;
+    width: 100%;
+    text-decoration: none;
 }
 .main-content .courses .data span{
     align-self: center;

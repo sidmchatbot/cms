@@ -5,7 +5,7 @@ Options -Indexes
 RewriteCond %{REQUEST_URI} !\.(jpeg|css|png|js)$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php?data=$1
+RewriteRule ^(.*)$ index.php?data=$1 [QSA]
 
 <FilesMatch "\.(html|htm|js|css|php)>
 FileETag None

@@ -79,12 +79,13 @@
         let c = _(".courses input[type='checkbox']:not([name='course']):checked"),
         fd = new FormData(),
         i = 0;
-        console.log(c);
-        fd.append("mode", "delete_course");
+        if(c.length == 0)return;
+        if(!confirm(`Delete ${c.length} course(s)?`))return;
         for(; i < c.length; i++){
-            fd.append(c[i].name, c[i].nextElementSibling.value);
+            fd.append("course["+i+"]", c[i].name.replace(/(course|\[|\])/g,""));
         }
-        fetch("process.php", {method : "POST", body : fd})
+
+        fetch("process.php?type=delete", {method : "POST", body : fd})
         .then(e=>e.json())
         .then(e=>console.log(e));
     }
