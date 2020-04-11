@@ -12,6 +12,57 @@ h1,h2,h3,h4,h5,h6{
 p{
     font-family: "Open Sans", sans-serif;
 }
+.tokenfield{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 7px 13px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: inset 0px 0px 1px 0px #00000024;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+.tokenfield .token-input{
+    flex: 1;
+}
+.tokenfield .token{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid #d9d9d9;
+    background-color: #ededed;
+    white-space: nowrap;
+    margin: -1px 5px 5px 0;
+    vertical-align: top;
+    cursor: default;
+    font-size: 1.1em;
+}
+.tokenfield .close{
+    display: inline-block;
+    font-size: 1.1em;
+    margin-left: 5px;
+    float: none;
+    vertical-align: -webkit-baseline-middle;
+    padding-right: 4px;
+    text-decoration: none;
+    color: black;
+}
+.tokenfield .token-label{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 4px;
+    vertical-align: -webkit-baseline-middle;
+}
+.tokenfield .token-input{
+    border: none !important;
+}
+.tokenfield .token-input:focus{
+    border: 1px solid rgba(0,0,0,0.2);
+}
 .container{
     display: flex;
 }

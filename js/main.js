@@ -83,13 +83,23 @@
         if(!confirm(`Delete ${c.length} course(s)?`))return;
         for(; i < c.length; i++){
             fd.append("course["+i+"]", c[i].name.replace(/(course|\[|\])/g,""));
+            fd.append(`course_name[${i}]`,c[i].parentElement.nextElementSibling.innerText);
         }
-
         fetch("process.php?type=delete", {method : "POST", body : fd})
         .then(e=>e.json())
-        .then(e=>console.log(e));
+        .then(e=>c.forEach(e=>{
+            let a = e;
+            while((a=a.parentElement) && !a.classList.contains("data"));
+            a.remove();
+        }));
     }
     window.onload = ()=>{
+        $("#tokenfield").tokenfield().on("tokenfield:createdtoken", function(e){
+            let a = [...new Set($.map($(this).parent().children(".token"), function(e){
+                return $(e).data("value");
+            }))];
+            $("#all-tokens").val(a.join(","));
+        });
         _("label > input[type='checkbox']").forEach(e=>{e.onclick=ca;});
         _("input[value='Delete']").forEach(e=>e.onclick = dc);
         _("form[data-prevent='true']").forEach(e=>{a(e); e.onsubmit=s;});

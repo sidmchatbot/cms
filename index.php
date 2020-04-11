@@ -1,4 +1,6 @@
 <?php
+    $_ENV["GOOGLE_APPLICATION_CREDENTIALS"] = "demonypchatbot.json";
+    $_ENV["GOOGLE_CLOUD_PROJECT"] = "demonypchatbot";
     require "./vendor/autoload.php";
 
     $path = explode("/", $_GET["data"] ?? "home");
@@ -14,6 +16,9 @@
     <title>SIDM Content Management System</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/main.js"></script>
+    <!-- <link href="http://sliptree.github.io/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.css" rel="stylesheet"/> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
 </head>
 <body>
     <div class="container">

@@ -28,7 +28,7 @@
                             ""=>"Pick Program",
                             "nsa"=>"National Silver Academy",
                             "sc"=>"Short Course",
-                            "sp"=>"Specialist Diploma",
+                            "sd"=>"Specialist Diploma",
                             "wsp"=>"Work-Study Program"
                         ];
 
@@ -46,6 +46,11 @@
             <label for="description">
                 <p>Description </p>
                 <textarea rows=10 name="description" id="description" placeholder="Type in the description of the course"><?=$data["description"] ?? "";?></textarea>
+            </label>
+            <label for="tokenfield">
+                <p>Keyword</p>
+                <input id="tokenfield" value="<?=isset($data["tokens"]) ? implode(",", $data["tokens"]) : ""?>"/>
+                <input type="hidden" id="all-tokens" name="tokens"/>
             </label>
             <h5>Timing</h5>
             <hr>

@@ -2,6 +2,7 @@
     "name": "185498h/cms",
     "require": {
         "kreait/firebase-php": "^4.41",
-        "google/cloud-firestore": "^1.11"
+        "google/cloud-firestore": "^1.11",
+        "google/cloud-dialogflow": "^0.14.1"
     }
 }
