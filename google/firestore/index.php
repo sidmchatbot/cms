@@ -26,8 +26,6 @@
         public function update($col, $d, $data){
             $field = [];
             foreach($data as $k=>$v){
-                if($k == "program")
-                    $v = $this->doc("programme", $v);
                 $field[] = ["path"=>$k, "value"=>$v];
             }
             $this->doc($col, $d)->update($field);

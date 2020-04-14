@@ -1,11 +1,27 @@
 <?php
+    //global variable
+
+    require "./vendor/autoload.php";
+    require "google/firestore/index.php";
+
     $_ENV["GOOGLE_APPLICATION_CREDENTIALS"] = "demonypchatbot.json";
     $_ENV["GOOGLE_CLOUD_PROJECT"] = "demonypchatbot";
-    require "./vendor/autoload.php";
+    
+    define("VALID_PATH", [
+        "home"=>"home", 
+        "index"=>"home", 
+        "national silver academy"=>"nsa",
+        "short course"=>"sc",
+        "specialist diploma"=>"sd",
+        "work study program"=>"wsp"
+    ]);
 
-    $path = explode("/", $_GET["data"] ?? "home");
-    $prog_path = strtolower($path[0]);
-    $key_path = strtolower($path[1] ?? "");
+    function to_url_path($link){
+        return str_replace(" ", "+", $link);
+    }
+    $path = explode("/", $_GET["data"] ?? "home"); // get array of url path
+    $prog_path = strtolower($path[0]); // get programme path
+    $key_path = strtolower($path[1] ?? ""); // get optional path of update/add/id 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +39,10 @@
 <body>
     <div class="container">
         <?php include_once "template/nav/index.php";?>
-        <?php include_once "template/main/index.php";?>
+        <?php 
+            // echo var_dump(array_search($prog_path, array_keys(VALID_PATH)));
+            include_once "template/main/index.php";
+        ?>
     </div>
 </body>
 </html>

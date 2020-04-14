@@ -82,8 +82,8 @@
         if(c.length == 0)return;
         if(!confirm(`Delete ${c.length} course(s)?`))return;
         for(; i < c.length; i++){
-            fd.append("course["+i+"]", c[i].name.replace(/(course|\[|\])/g,""));
-            fd.append(`course_name[${i}]`,c[i].parentElement.nextElementSibling.innerText);
+            fd.append("course["+i+"][key]", c[i].name.replace(/(course|\[|\])/g,""));
+            fd.append(`course[${i}][name]`,c[i].parentElement.nextElementSibling.innerText);
         }
         fetch("process.php?type=delete", {method : "POST", body : fd})
         .then(e=>e.json())
@@ -100,6 +100,7 @@
             }))];
             $("#all-tokens").val(a.join(","));
         });
+        // fix delete also for tokenfield
         _("label > input[type='checkbox']").forEach(e=>{e.onclick=ca;});
         _("input[value='Delete']").forEach(e=>e.onclick = dc);
         _("form[data-prevent='true']").forEach(e=>{a(e); e.onsubmit=s;});

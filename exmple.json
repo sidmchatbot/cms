@@ -1,0 +1,59 @@
+
+[
+    {
+        "key": "03fc3dbb1a3c4a09b08c",
+        "start": "2011-11-21",
+        "name": "Photography In Motion",
+        "tokens": [
+            "photos",
+            "photographs",
+            "png",
+            "jpg"
+        ],
+        "registration": "2011-11-11",
+        "requirement": "",
+        "program": "nsa",
+        "duration": {
+            "period": "hour",
+            "val": "4"
+        },
+        "date_added": "2020-04-14T19:12:15.042116Z",
+        "description": "We will educate you on how to take a best photographs and teach you skills relevant to photography."
+    },
+    {
+        "key": "17db2dc723b145dab7f1",
+        "date_added": "2020-04-14T19:08:37.813404Z",
+        "requirement": "",
+        "program": "nsa",
+        "duration": {
+            "period": "hour",
+            "val": "8"
+        },
+        "description": "Learning to game and program is the fun thing to do in the current century. Why not learn the fundementals of gaming and understand the game culture of today",
+        "start": "2019-12-22",
+        "name": "Gaming in general",
+        "tokens": [
+            "PS4",
+            "gaming",
+            "Xbox",
+            "Nintendo",
+            "WII"
+        ],
+        "registration": "2020-01-12"
+    },
+    {
+        "key": "a539603119ba47609b45",
+        "duration-period": "hour",
+        "duration": "",
+        "requirement": "",
+        "program": "nsa",
+        "date_added": "2020-04-12T22:38:29.413226Z",
+        "description": "The course covers basics of 3D Printing and its endless possibilities including practical skills for creation of 3D objects using the technology. Participants will get exposure to a combination of innovative design process and 3D printing technology.\r\n\r\n",
+        "start": "",
+        "name": "3D Printings",
+        "tokens": [
+            ""
+        ],
+        "registration": "2019-09-27"
+    }
+]        

@@ -5,45 +5,71 @@
     
     use Google\Cloud\Core\Timestamp;
 
-    if($_GET["type"] == "add"){ // adding courses
-        $GFirestore->insert("course", [
-            "name"=>$_POST["name"],
-            "description"=>$_POST["description"],
-            "duration"=>[
-                "val"=>$_POST["duration"],
-                "period"=>$_POST["duration-period"]
-            ],
-            "program"=>$GFirestore->doc("programme", $_POST["program"]),
-            "registration"=>$_POST["registration"],
-            "start"=>$_POST["start"],
-            "requirement"=>$_POST["requirement"],
-            "date_added"=>new Timestamp(new DateTime()),
-            "tokens"=>explode(",", $_POST["tokens"])
-        ]);
-        $DialogflowEntities->entity("6f806756-f5d1-4905-9d25-815d40912e2b", $_POST["name"], explode(",", $_POST["tokens"]));
-        header("Location: ".$_POST["redirect"]);
-    }
+    $post = $_POST;
 
-    if($_GET["type"] == "desc"){
-        $GFirestore->update("programme", $_POST["doc"], ["description"=>$_POST["desc"]]);
-    }
+    switch($_GET["type"]){
+        case "add" : 
+            $course = $DialogflowEntities->entities("course");
+            $tag = $DialogflowEntities->entities("tag");
+            $post["duration"] = ["val"=>$post["duration"], "period"=>$post["duration-period"]];
+            $post["program"] = $GFirestore->doc("programme", $post["program"]);
+            $post["tokens"] = explode(",",$post["tokens"]);
+            $post["date_added"] = new Timestamp(new DateTime());
+            unset($post["duration-period"]);
+            unset($post["key"]);
+            unset($post["prev_name"]);
+            unset($post["redirect"]);
+            unset($post["submit"]);
 
-    if($_GET["type"] == "delete"){
-        for($i = 0; $i < count($_POST["course"]); $i++){
-            $GFirestore->delete("course", $_POST["course"][$i]);
-            $DialogflowEntities->delete("6f806756-f5d1-4905-9d25-815d40912e2b", $_POST["course_name"][$i]);
-        }
-        echo json_encode(["status"=>"finished"]);
-    }
+            $GFirestore->insert("course", $post);
+            $DialogflowEntities->val($course, $post["name"], [$post["name"]]);
+            $DialogflowEntities->val($tag, $post["name"], $post["tokens"]);
 
-    if($_GET["type"] == "update"){
-        $post = $_POST;
-        unset($post["submit"]);
-        unset($post["key"]);
-        unset($post["redirect"]);
-        $post["tokens"] = explode(",",$_POST["tokens"]);
-        $GFirestore->update("course", $_POST["key"], $post);
-        $DialogflowEntities->entity("6f806756-f5d1-4905-9d25-815d40912e2b", $post["name"], $post["tokens"]);
-        header("Location: ".$_POST["redirect"]);
+            header("Location: ".$_POST["redirect"]);
+
+        break;
+
+        case "update" : 
+            $course = $DialogflowEntities->entities("course");
+            $tag = $DialogflowEntities->entities("tag");
+            $post["program"] = $GFirestore->doc("programme", $post["program"]);
+            $post["duration"] = ["val"=>$post["duration"], "period"=>$post["duration-period"]];
+            $post["tokens"] = explode(",", $post["tokens"]);
+            unset($post["duration-period"]);
+            unset($post["submit"]);
+            unset($post["redirect"]);
+            unset($post["key"]);
+            unset($post["prev_name"]);
+
+            $DialogflowEntities->changeKeyName($tag, $_POST["prev_name"], $post["name"], $post["tokens"]);
+            $DialogflowEntities->changeKeyName($course, $_POST["prev_name"], $post["name"], [$post["name"]]);
+            $GFirestore->update("course", $_POST["key"], $post);
+
+            header("Location: ".$_POST["redirect"]);
+        break;
+
+        case "desc" : 
+            $GFirestore->update("programme", $_POST["doc"], ["description"=>$_POST["desc"]]);
+        break;
+
+        case "delete" : 
+            $course = $DialogflowEntities->entities("course");
+            $tag = $DialogflowEntities->entities("tag");
+            
+            for($i = 0;$i < count($post["course"]); $i++){
+                $DialogflowEntities->delete($course, $post["course"][$i]["name"]);
+                $DialogflowEntities->delete($tag, $post["course"][$i]["name"]);
+                $GFirestore->delete("course", $post["course"][$i]["key"]);
+            }
+            echo json_encode($post["course"]);
+        break;
     }
+    // if($_GET["type"] == "delete"){
+    //     for($i = 0; $i < count($_POST["course"]); $i++){
+    //         $GFirestore->delete("course", $_POST["course"][$i]);
+    //         $DialogflowEntities->delete("6f806756-f5d1-4905-9d25-815d40912e2b", $_POST["course_name"][$i]);
+    //     }
+    //     echo json_encode(["status"=>"finished"]);
+    // }
+
 ?>
